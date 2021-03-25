@@ -56,12 +56,11 @@ public class Configuration {
         }
     }
 
-    public static func configuration(fromJSONResource jsonResource: String) -> Configuration? {
-        let url = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("config/\(jsonResource).json")
-        guard let jsonData = try? Data(contentsOf: url) else {
+    public static func configuration(fromType type: ConfigurationType) -> Configuration? {
+        guard let url = Bundle.module.url(forResource: type.rawValue, withExtension: "json"),
+              let jsonData = try? Data(contentsOf: url) else {
             return nil
         }
-
         return Configuration(jsonData: jsonData)
     }
 
